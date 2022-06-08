@@ -1,0 +1,13 @@
+.popup__button {
+  font-size: 18px;
+  color: #fff;
+  background-color: #000;
+  border-radius: 2px;
+  padding: 16px 0;
+}
+
+@media screen and (max-width: 400px) {
+  .popup__button {
+    font-size: 14px;
+  }
+}
