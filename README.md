@@ -9,3 +9,6 @@ _Приложение в котором можно делиться фотогр
 - HTML 5
 - CSS 3
 - JavaScript
+
+Посмотреть проект можно здесь
+https://maksimarus.github.io/mesto/index.html
