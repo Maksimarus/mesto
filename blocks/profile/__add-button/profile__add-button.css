@@ -4,6 +4,7 @@
   border: 2px solid #fff;
   border-radius: 2px;
   background: url(../../../images/icons/add-icon.svg) center no-repeat;
+  background-size: 22px;
 }
 
 @media screen and (max-width: 750px) {
@@ -17,5 +18,6 @@
 @media screen and (max-width: 618px) {
   .profile__add-button {
     margin-top: 0;
+    background-size: 16px;
   }
 }

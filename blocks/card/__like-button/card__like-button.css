@@ -5,3 +5,7 @@
   background-size: cover;
   flex-shrink: 0;
 }
+
+.card__like-button:hover {
+  opacity: 0.5;
+}
