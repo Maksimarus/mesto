@@ -27,7 +27,6 @@ popupCloseButton.addEventListener('click', () => {
 
 // Функция-обработчик отправки формы (вместо отправки - изменение информации в профиле)
 function formSubmitHandler(e) {
-  console.log('111');
   e.preventDefault();
 
   profileName.textContent = nameInput.value;
