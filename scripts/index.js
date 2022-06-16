@@ -47,14 +47,8 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
   },
 ];
-let cardsArray = [...initialCards];
-
-function deleteCard() {
-  console.log(event.target);
-}
 
 function renderCards(array) {
-  cardsList.innerHTML = '';
   array.forEach((card) => createCard(card));
 }
 
@@ -71,12 +65,14 @@ function createCard({ name, link }) {
   likeButton.addEventListener('click', () => {
     likeButton.classList.toggle('active');
   });
-  deleteButton.addEventListener('click', deleteCard);
+  deleteButton.addEventListener('click', (event) => {
+    event.target.parentNode.remove();
+  });
 
   cardsList.prepend(card);
 }
 
-renderCards(cardsArray);
+renderCards(initialCards);
 
 function closePopup() {
   popups.forEach((popup) => {
@@ -118,9 +114,7 @@ function addPlaceFormSubmitHandler(e) {
     link: placeUrlInput.value,
   };
 
-  cardsArray.push(placeInputsObj);
-  renderCards(cardsArray);
-  console.log(cardsArray);
+  createCard(placeInputsObj);
   closePopup();
 }
 
