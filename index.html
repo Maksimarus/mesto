@@ -8,105 +8,76 @@
     <title>Mesto</title>
   </head>
 
-  <body>
-    <div class="page">
-      <header class="header">
-        <img src="./images/icons/logo.svg" alt="Логотип сервиса Место" class="header__logo" />
-      </header>
+  <body class="page">
+    <header class="header">
+      <img src="./images/icons/logo.svg" alt="Логотип сервиса Место" class="header__logo" />
+    </header>
 
-      <main class="main">
-        <section class="profile">
-          <img src="./images/avatar.jpg" alt="Аватар пользователя" class="profile__avatar" />
-          <div class="profile__info">
-            <div class="profile__wrapper">
-              <h1 class="profile__name">Жак-Ив Кусто</h1>
-              <button type="button" class="profile__edit-button button"></button>
-            </div>
-            <p class="profile__description">Исследователь океана</p>
+    <main class="main">
+      <section class="profile">
+        <img src="./images/avatar.jpg" alt="Аватар пользователя" class="profile__avatar" />
+        <div class="profile__info">
+          <div class="profile__wrapper">
+            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <button type="button" class="profile__edit-button button"></button>
           </div>
-          <button type="button" class="profile__add-button button"></button>
-        </section>
-
-        <section class="cards">
-          <ul class="cards__list">
-            <li class="card">
-              <picture>
-                <source srcset="./images/images-2x/karachaevsk-2x.jpg 2x" />
-                <img src="./images/karachaevsk.jpg" alt="Карачаевск" class="card__image" />
-              </picture>
-              <div class="card__description">
-                <h2 class="card__title">Карачаевск</h2>
-                <button type="button" class="button card__like-button"></button>
-              </div>
-            </li>
-            <li class="card">
-              <picture>
-                <source srcset="./images/images-2x/elbrus-2x.jpg 2x" />
-                <img src="./images/elbrus.jpg" alt="Гора Эльбрус" class="card__image" />
-              </picture>
-              <div class="card__description">
-                <h2 class="card__title">Гора Эльбрус</h2>
-                <button type="button" class="button card__like-button"></button>
-              </div>
-            </li>
-            <li class="card">
-              <picture>
-                <source srcset="./images/images-2x/dombai-2x.jpg 2x" />
-                <img src="./images/dombai.jpg" alt="Горная территория Домбай" class="card__image" />
-              </picture>
-              <div class="card__description">
-                <h2 class="card__title">Домбай</h2>
-                <button type="button" class="button card__like-button"></button>
-              </div>
-            </li>
-            <li class="card">
-              <picture>
-                <source srcset="./images/images-2x/elbrus-2x.jpg 2x" />
-                <img src="./images/elbrus.jpg" alt="Гора Эльбрус" class="card__image" />
-              </picture>
-              <div class="card__description">
-                <h2 class="card__title">Гора Эльбрус</h2>
-                <button type="button" class="button card__like-button"></button>
-              </div>
-            </li>
-            <li class="card">
-              <picture>
-                <source srcset="./images/images-2x/dombai-2x.jpg 2x" />
-                <img src="./images/dombai.jpg" alt="Горная территория Домбай" class="card__image" />
-              </picture>
-              <div class="card__description">
-                <h2 class="card__title">Домбай</h2>
-                <button type="button" class="button card__like-button"></button>
-              </div>
-            </li>
-            <li class="card">
-              <picture>
-                <source srcset="./images/images-2x/karachaevsk-2x.jpg 2x" />
-                <img src="./images/karachaevsk.jpg" alt="Карачаевск" class="card__image" />
-              </picture>
-              <div class="card__description">
-                <h2 class="card__title">Карачаево-Чeркессия</h2>
-                <button type="button" class="button card__like-button"></button>
-              </div>
-            </li>
-          </ul>
-        </section>
-      </main>
-
-      <footer class="footer">
-        <p class="footer__copyright">&copy; 2022 Mesto Russia</p>
-      </footer>
-
-      <div class="popup">
-        <div class="popup__container">
-          <form name="profileForm" class="popup__form">
-            <h2 class="popup__title">Редактировать профиль</h2>
-            <input name="nameInput" class="popup__input" type="text" id="nameInput" />
-            <input name="jobInput" class="popup__input" type="text" id="jobInput" />
-            <button class="button popup__button" type="submit">Сохранить</button>
-          </form>
-          <button type="button" class="button popup__close-button"></button>
+          <p class="profile__description">Исследователь океана</p>
         </div>
+        <button type="button" class="profile__add-button button"></button>
+      </section>
+
+      <section class="cards">
+        <ul class="cards__list">
+          <template id="card-template">
+            <li class="card" data-index="">
+              <img src="" alt="" class="card__image" />
+              <div class="card__description">
+                <h2 class="card__title"></h2>
+                <button type="button" class="button card__like-button"></button>
+              </div>
+              <button type="button" class="button card__delete-button"></button>
+            </li>
+          </template>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="footer__copyright">&copy; 2022 Mesto Russia</p>
+    </footer>
+
+    <div class="popup popup_editProfile">
+      <div class="popup__container">
+        <form name="profile-form" class="popup__form">
+          <h2 class="popup__title">Редактировать профиль</h2>
+          <input name="nameInput" class="popup__input" type="text" id="nameInput" />
+          <input name="jobInput" class="popup__input" type="text" id="jobInput" />
+          <button class="button popup__button" type="submit">Сохранить</button>
+        </form>
+        <button type="button" class="button popup__close-button"></button>
+      </div>
+    </div>
+    <div class="popup popup_addPlace">
+      <div class="popup__container">
+        <form name="addPlace-form" class="popup__form">
+          <h2 class="popup__title">Новое место</h2>
+          <input
+            name="placeNameInput"
+            class="popup__input"
+            type="text"
+            id="placeNameInput"
+            placeholder="Название"
+          />
+          <input
+            name="placeUrlInput"
+            class="popup__input"
+            type="url"
+            id="placeUrlInput"
+            placeholder="Ссылка на картинку"
+          />
+          <button class="button popup__button" type="submit">Сохранить</button>
+        </form>
+        <button type="button" class="button popup__close-button"></button>
       </div>
     </div>
     <script src="./scripts/index.js"></script>
