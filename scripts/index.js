@@ -3,8 +3,8 @@ const popups = document.querySelectorAll('.popup');
 const popupContainer = document.querySelector('.popup__container');
 const popupCloseButtons = document.querySelectorAll('.popup__close-button');
 
-const popupEditProfile = document.querySelector('.popup_editProfile');
-const popupAddPlace = document.querySelector('.popup_addPlace');
+const popupEditProfile = document.querySelector('.popup_role_edit-profile');
+const popupAddCard = document.querySelector('.popup_role_add-card');
 const profileAddButton = document.querySelector('.profile__add-button');
 
 const profileEditForm = document.forms['profile-form'];
@@ -17,39 +17,12 @@ const addPlaceForm = document.forms['addPlace-form'];
 const placeNameInput = document.querySelector('#placeNameInput');
 const placeUrlInput = document.querySelector('#placeUrlInput');
 
-const popupImage = document.querySelector('.popup_image');
+const popupImage = document.querySelector('.popup_role_open-image');
 const popupImageImg = document.querySelector('.popup-image__img');
 const popupImageFigcaption = document.querySelector('.popup-image__figcaption');
 
 const cardsList = document.querySelector('.cards__list');
 const cardTemplate = document.querySelector('#card-template').content;
-
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
-  },
-];
 
 // Функция открытия попапа
 function openPopup(elem) {
@@ -58,6 +31,7 @@ function openPopup(elem) {
 
 function openImage(event) {
   popupImageImg.src = event.target.src;
+  popupImageImg.alt = event.target.alt;
   popupImageFigcaption.textContent = event.target.alt;
   openPopup(popupImage);
 }
@@ -114,7 +88,7 @@ profileEditButton.addEventListener('click', () => {
 });
 
 profileAddButton.addEventListener('click', () => {
-  openPopup(popupAddPlace);
+  openPopup(popupAddCard);
 });
 
 // Закрыти попапа при клике на кнопку закрыть(крестик)
@@ -147,8 +121,7 @@ function addPlaceFormSubmitHandler(e) {
   };
 
   renderCard(placeInputsObj);
-  placeNameInput.value = '';
-  placeUrlInput.value = '';
+  e.target.reset();
   closePopup();
 }
 
