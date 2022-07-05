@@ -24,9 +24,26 @@ const popupImageFigcaption = document.querySelector('.popup-image__figcaption');
 const cardsList = document.querySelector('.cards__list');
 const cardTemplate = document.querySelector('#card-template').content;
 
+// Закрыти попапа кликом на оверлей
+function closePopupOnOutsideClick(e) {
+  const path = e.path || (e.composedPath && e.composedPath());
+  if (path[0] === e.target.closest('.popup')) {
+    closePopup();
+  }
+}
+
+// Закрыти попапа нажатием на ESC
+function closePopupOnPressEsc(e) {
+  if (e.key === 'Escape') {
+    closePopup();
+  }
+}
+
 // Функция открытия попапа
 function openPopup(elem) {
   elem.classList.add('popup_opened');
+  elem.addEventListener('click', closePopupOnOutsideClick);
+  document.body.addEventListener('keydown', closePopupOnPressEsc);
 }
 
 function openImage(event) {
@@ -46,7 +63,7 @@ function deleteCard(event) {
 }
 
 // Функция создания карточки
-function createCard({ name, link }) {
+function createCard({name, link}) {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = card.querySelector('.card__image');
   const cardTitle = card.querySelector('.card__title');
@@ -57,7 +74,7 @@ function createCard({ name, link }) {
   cardImage.alt = name;
   cardTitle.textContent = name;
 
-  cardImage.addEventListener('click', (event) => {
+  cardImage.addEventListener('click', event => {
     openImage(event);
   });
 
@@ -65,7 +82,7 @@ function createCard({ name, link }) {
     toggleLike(likeButton);
   });
 
-  deleteButton.addEventListener('click', (event) => {
+  deleteButton.addEventListener('click', event => {
     deleteCard(event);
   });
   return card;
@@ -78,7 +95,7 @@ function renderCard(obj) {
 }
 
 // Отрисовка начальных карточек при загрузке страницы
-initialCards.forEach((card) => renderCard(card));
+initialCards.forEach(card => renderCard(card));
 
 // Открытие попапа при клике
 profileEditButton.addEventListener('click', () => {
@@ -93,11 +110,13 @@ profileAddButton.addEventListener('click', () => {
 
 // Закрыти попапа при клике на кнопку закрыть(крестик)
 function closePopup() {
-  popups.forEach((popup) => {
+  popups.forEach(popup => {
     popup.classList.remove('popup_opened');
+    popup.addEventListener('click', closePopupOnOutsideClick);
+    document.body.removeEventListener('keydown', closePopupOnPressEsc);
   });
 }
-popupCloseButtons.forEach((btn) => {
+popupCloseButtons.forEach(btn => {
   btn.addEventListener('click', closePopup);
 });
 
