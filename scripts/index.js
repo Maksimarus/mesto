@@ -1,3 +1,10 @@
+// Принудительная генерация события инпут
+function generateInputEvent(formElement) {
+  const event = new Event('input');
+  const inputs = formElement.querySelectorAll('.popup__input');
+  inputs.forEach(input => input.dispatchEvent(event));
+}
+
 // Закрыти попапа кликом на оверлей
 function closePopupOnOutsideClick(e) {
   const path = e.path || (e.composedPath && e.composedPath());
@@ -16,13 +23,8 @@ function closePopupOnPressEsc(e) {
 // Функция открытия попапа
 function openPopup(elem) {
   elem.classList.add('popup_opened');
-  elem.addEventListener('click', closePopupOnOutsideClick);
+  elem.addEventListener('mousedown', closePopupOnOutsideClick);
   document.body.addEventListener('keydown', closePopupOnPressEsc);
-
-  // Принудительная генерация события инпут
-  const event = new Event('input');
-  const inputs = elem.querySelectorAll('.popup__input');
-  inputs.forEach(input => input.dispatchEvent(event));
 }
 
 function openImage(e) {
@@ -80,10 +82,12 @@ initialCards.forEach(card => renderCard(card));
 profileEditButton.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
+  generateInputEvent(profileEditForm);
   openPopup(popupEditProfile);
 });
 
 profileAddButton.addEventListener('click', () => {
+  generateInputEvent(addPlaceForm);
   openPopup(popupAddCard);
 });
 
