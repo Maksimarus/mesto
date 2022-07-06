@@ -1,29 +1,3 @@
-const profileEditButton = document.querySelector('.profile__edit-button');
-const popups = document.querySelectorAll('.popup');
-const popupContainer = document.querySelector('.popup__container');
-const popupCloseButtons = document.querySelectorAll('.popup__close-button');
-
-const popupEditProfile = document.querySelector('.popup_role_edit-profile');
-const popupAddCard = document.querySelector('.popup_role_add-card');
-const profileAddButton = document.querySelector('.profile__add-button');
-
-const profileEditForm = document.forms['profile-form'];
-const nameInput = document.querySelector('#nameInput');
-const jobInput = document.querySelector('#jobInput');
-const profileName = document.querySelector('.profile__name');
-const profileJob = document.querySelector('.profile__description');
-
-const addPlaceForm = document.forms['addPlace-form'];
-const placeNameInput = document.querySelector('#placeNameInput');
-const placeUrlInput = document.querySelector('#placeUrlInput');
-
-const popupImage = document.querySelector('.popup_role_open-image');
-const popupImageImg = document.querySelector('.popup-image__img');
-const popupImageFigcaption = document.querySelector('.popup-image__figcaption');
-
-const cardsList = document.querySelector('.cards__list');
-const cardTemplate = document.querySelector('#card-template').content;
-
 // Закрыти попапа кликом на оверлей
 function closePopupOnOutsideClick(e) {
   const path = e.path || (e.composedPath && e.composedPath());
@@ -44,12 +18,17 @@ function openPopup(elem) {
   elem.classList.add('popup_opened');
   elem.addEventListener('click', closePopupOnOutsideClick);
   document.body.addEventListener('keydown', closePopupOnPressEsc);
+
+  // Принудительная генерация события инпут
+  const event = new Event('input');
+  const inputs = elem.querySelectorAll('.popup__input');
+  inputs.forEach(input => input.dispatchEvent(event));
 }
 
-function openImage(event) {
-  popupImageImg.src = event.target.src;
-  popupImageImg.alt = event.target.alt;
-  popupImageFigcaption.textContent = event.target.alt;
+function openImage(e) {
+  popupImageImg.src = e.target.src;
+  popupImageImg.alt = e.target.alt;
+  popupImageFigcaption.textContent = e.target.alt;
   openPopup(popupImage);
 }
 
@@ -57,8 +36,8 @@ function toggleLike(btn) {
   btn.classList.toggle('active');
 }
 
-function deleteCard(event) {
-  const card = event.target.closest('.card');
+function deleteCard(e) {
+  const card = e.target.closest('.card');
   card.remove();
 }
 
@@ -74,16 +53,16 @@ function createCard({name, link}) {
   cardImage.alt = name;
   cardTitle.textContent = name;
 
-  cardImage.addEventListener('click', event => {
-    openImage(event);
+  cardImage.addEventListener('click', e => {
+    openImage(e);
   });
 
   likeButton.addEventListener('click', () => {
     toggleLike(likeButton);
   });
 
-  deleteButton.addEventListener('click', event => {
-    deleteCard(event);
+  deleteButton.addEventListener('click', e => {
+    deleteCard(e);
   });
   return card;
 }
@@ -135,7 +114,7 @@ function addPlaceFormSubmitHandler(e) {
   e.preventDefault();
 
   const placeInputsObj = {
-    name: placeNameInput.value,
+    name: placeTitleInput.value,
     link: placeUrlInput.value,
   };
 

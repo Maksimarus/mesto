@@ -1,6 +1,65 @@
-function enableValidation(obj) {}
-// включение валидации вызовом enableValidation
-// все настройки передаются при вызове
+const hasInvalidInput = inputList => {
+  return inputList.some(input => {
+    return !input.validity.valid;
+  });
+};
+
+const toggleButtonState = (inputList, button, inactiveButtonClass) => {
+  if (hasInvalidInput(inputList)) {
+    button.setAttribute('disabled', true);
+    button.classList.add(inactiveButtonClass);
+  } else {
+    button.removeAttribute('disabled');
+    button.classList.remove(inactiveButtonClass);
+  }
+};
+
+const showInputError = (form, input, errorMessage, inputErrorClass, errorClass) => {
+  const error = form.querySelector(`.${input.id}-error`);
+  input.classList.add(inputErrorClass);
+  error.textContent = errorMessage;
+  error.classList.add(errorClass);
+};
+
+const hideInputError = (form, input, inputErrorClass, errorClass) => {
+  const error = form.querySelector(`.${input.id}-error`);
+  input.classList.remove(inputErrorClass);
+  error.classList.remove(errorClass);
+  error.textContent = '';
+};
+
+const checkInputValidity = (form, input, inputErrorClass, errorClass) => {
+  if (!input.validity.valid) {
+    showInputError(form, input, input.validationMessage, inputErrorClass, errorClass);
+  } else {
+    hideInputError(form, input, inputErrorClass, errorClass);
+  }
+};
+
+const setEventListeners = (
+  form,
+  {inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass},
+) => {
+  const inputList = Array.from(form.querySelectorAll(inputSelector));
+  const button = form.querySelector(submitButtonSelector);
+  toggleButtonState(inputList, button, inactiveButtonClass);
+  inputList.forEach(input => {
+    input.addEventListener('input', () => {
+      checkInputValidity(form, input, inputErrorClass, errorClass);
+      toggleButtonState(inputList, button, inactiveButtonClass);
+    });
+  });
+};
+
+const enableValidation = ({formSelector, ...rest}) => {
+  const formList = Array.from(document.querySelectorAll(formSelector));
+  formList.forEach(form => {
+    setEventListeners(form, rest);
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+    });
+  });
+};
 
 enableValidation({
   formSelector: '.popup__form',
@@ -10,27 +69,3 @@ enableValidation({
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible',
 });
-
-// TODO: обращение к полям формы
-// function setSubmitButtonState(isFormValid) {
-//   if(isFormValid) {
-//   addButton.removeAttribute('disabled');
-//   addButton.classList.remove('input__btn_disabled');
-// setSubmitButtonState(false);
-//   } else {
-//   addButton.setAttribute('disabled', true);
-//   addButton.classList.add('input__btn_disabled');
-//   }
-// }
-
-// form.addEventListener('submit', function (evt) {
-//   evt.preventDefault();
-//   addSong(artist.value, title.value);
-//   artist.value = '';
-//   title.value = '';
-// });
-
-// form.addEventListener('input', (evt) => {
-//   const isValid = artist.value.length > 0 && title.value.length > 0;
-//   setSubmitButtonState(isValid)
-// })
