@@ -95,7 +95,7 @@ profileAddButton.addEventListener('click', () => {
 function closePopup() {
   popups.forEach(popup => {
     popup.classList.remove('popup_opened');
-    popup.addEventListener('click', closePopupOnOutsideClick);
+    popup.removeEventListener('mousedown', closePopupOnOutsideClick);
     document.body.removeEventListener('keydown', closePopupOnPressEsc);
   });
 }
