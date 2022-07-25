@@ -1,3 +1,35 @@
+import initialCards from './cards.js';
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+import {
+  profileEditButton,
+  popups,
+  popupCloseButtons,
+  popupEditProfile,
+  popupAddCard,
+  profileAddButton,
+  profileEditForm,
+  nameInput,
+  jobInput,
+  profileName,
+  profileJob,
+  addPlaceForm,
+  placeTitleInput,
+  placeUrlInput,
+  popupImage,
+  popupImageImg,
+  popupImageFigcaption,
+  cardsList,
+  formConfig,
+  formsList,
+} from './constants.js';
+
+// Активация валидации форм
+formsList.forEach(form => {
+  const formValidator = new FormValidator(formConfig, form);
+  formValidator.enableValidation();
+});
+
 // Принудительная генерация события инпут
 function generateInputEvent(formElement) {
   const event = new Event('input');
@@ -27,52 +59,18 @@ function openPopup(elem) {
   document.body.addEventListener('keydown', closePopupOnPressEsc);
 }
 
-function openImage(e) {
+export function openImage(e) {
   popupImageImg.src = e.target.src;
   popupImageImg.alt = e.target.alt;
   popupImageFigcaption.textContent = e.target.alt;
   openPopup(popupImage);
 }
 
-function toggleLike(btn) {
-  btn.classList.toggle('active');
-}
-
-function deleteCard(e) {
-  const card = e.target.closest('.card');
-  card.remove();
-}
-
-// Функция создания карточки
-function createCard({name, link}) {
-  const card = cardTemplate.querySelector('.card').cloneNode(true);
-  const cardImage = card.querySelector('.card__image');
-  const cardTitle = card.querySelector('.card__title');
-  const likeButton = card.querySelector('.card__like-button');
-  const deleteButton = card.querySelector('.card__delete-button');
-
-  cardImage.src = link;
-  cardImage.alt = name;
-  cardTitle.textContent = name;
-
-  cardImage.addEventListener('click', e => {
-    openImage(e);
-  });
-
-  likeButton.addEventListener('click', () => {
-    toggleLike(likeButton);
-  });
-
-  deleteButton.addEventListener('click', e => {
-    deleteCard(e);
-  });
-  return card;
-}
-
 // Отрисовка карточки
 function renderCard(obj) {
-  const card = createCard(obj);
-  cardsList.prepend(card);
+  const card = new Card(obj, '#card-template');
+  const cardElement = card.createCard();
+  cardsList.prepend(cardElement);
 }
 
 // Отрисовка начальных карточек при загрузке страницы
