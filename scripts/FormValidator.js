@@ -8,15 +8,15 @@ export default class FormValidator {
     this._errorClass = config.errorClass;
   }
 
-  _hasInvalidInput(inputList) {
-    return inputList.some(input => {
+  _hasInvalidInput() {
+    return this._inputList.some(input => {
       return !input.validity.valid;
     });
   }
 
-  _toggleButtonState(inputList) {
+  _toggleButtonState() {
     const button = this._form.querySelector(this._submitButtonSelector);
-    if (this._hasInvalidInput(inputList)) {
+    if (this._hasInvalidInput(this._inputList)) {
       button.setAttribute('disabled', true);
       button.classList.add(this._inactiveButtonClass);
     } else {
@@ -48,12 +48,12 @@ export default class FormValidator {
   }
 
   _setEventListeners() {
-    const inputList = [...this._form.querySelectorAll(this._inputSelector)];
-    this._toggleButtonState(inputList);
-    inputList.forEach(input => {
+    this._inputList = [...this._form.querySelectorAll(this._inputSelector)];
+    this._toggleButtonState();
+    this._inputList.forEach(input => {
       input.addEventListener('input', () => {
         this._checkInputValidity(input);
-        this._toggleButtonState(inputList);
+        this._toggleButtonState();
       });
     });
   }

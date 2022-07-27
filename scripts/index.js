@@ -3,23 +3,22 @@ import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import {
   profileEditButton,
-  popups,
   popupCloseButtons,
   popupEditProfile,
   popupAddCard,
   profileAddButton,
-  profileEditForm,
+  formProfileEdit,
   nameInput,
   jobInput,
   profileName,
   profileJob,
-  addPlaceForm,
+  formAddPlace,
   placeTitleInput,
   placeUrlInput,
+  popupWithImage,
   popupImage,
-  popupImageImg,
   popupImageFigcaption,
-  cardsList,
+  cardsContainer,
   formConfig,
   formsList,
 } from './constants.js';
@@ -37,40 +36,45 @@ function generateInputEvent(formElement) {
   inputs.forEach(input => input.dispatchEvent(event));
 }
 
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+  popup.removeEventListener('mousedown', closePopupOnOutsideClick);
+  document.body.removeEventListener('keydown', closePopupOnPressEsc);
+}
+
 // Закрыти попапа кликом на оверлей
-function closePopupOnOutsideClick(e) {
-  const path = e.path || (e.composedPath && e.composedPath());
-  if (path[0] === e.target.closest('.popup')) {
-    closePopup();
+function closePopupOnOutsideClick(e, popup) {
+  if (e.target === e.currentTarget) {
+    closePopup(popup);
   }
 }
 
 // Закрыти попапа нажатием на ESC
-function closePopupOnPressEsc(e) {
+function closePopupOnPressEsc(e, popup) {
   if (e.key === 'Escape') {
-    closePopup();
+    closePopup(popup);
   }
 }
 
 // Функция открытия попапа
 function openPopup(elem) {
   elem.classList.add('popup_opened');
-  elem.addEventListener('mousedown', closePopupOnOutsideClick);
-  document.body.addEventListener('keydown', closePopupOnPressEsc);
+  elem.addEventListener('mousedown', e => closePopupOnOutsideClick(e, elem));
+  document.body.addEventListener('keydown', e => closePopupOnPressEsc(e, elem));
 }
 
-export function openImage(e) {
-  popupImageImg.src = e.target.src;
-  popupImageImg.alt = e.target.alt;
-  popupImageFigcaption.textContent = e.target.alt;
-  openPopup(popupImage);
+export function openImage(imageTitle, imageLink) {
+  popupImage.src = imageLink;
+  popupImage.alt = imageTitle;
+  popupImageFigcaption.textContent = imageTitle;
+  openPopup(popupWithImage);
 }
 
 // Отрисовка карточки
 function renderCard(obj) {
   const card = new Card(obj, '#card-template');
   const cardElement = card.createCard();
-  cardsList.prepend(cardElement);
+  cardsContainer.prepend(cardElement);
 }
 
 // Отрисовка начальных карточек при загрузке страницы
@@ -80,39 +84,33 @@ initialCards.forEach(card => renderCard(card));
 profileEditButton.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
-  generateInputEvent(profileEditForm);
+  generateInputEvent(formProfileEdit);
   openPopup(popupEditProfile);
 });
 
 profileAddButton.addEventListener('click', () => {
-  generateInputEvent(addPlaceForm);
+  generateInputEvent(formAddPlace);
   openPopup(popupAddCard);
 });
 
 // Закрыти попапа при клике на кнопку закрыть(крестик)
-function closePopup() {
-  popups.forEach(popup => {
-    popup.classList.remove('popup_opened');
-    popup.removeEventListener('mousedown', closePopupOnOutsideClick);
-    document.body.removeEventListener('keydown', closePopupOnPressEsc);
-  });
-}
 popupCloseButtons.forEach(btn => {
-  btn.addEventListener('click', closePopup);
+  const popup = btn.closest('.popup');
+  btn.addEventListener('click', () => closePopup(popup));
 });
 
 // Функция-обработчик отправки формы (вместо отправки - изменение информации в профиле)
-function profileFormSubmitHandler(e) {
+function formProfileSubmitHandler(e) {
   e.preventDefault();
 
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
 
-  closePopup();
+  closePopup(e.target.closest('.popup'));
 }
 
 // Функция-обработчик добавления новой карточки
-function addPlaceFormSubmitHandler(e) {
+function formAddPlaceSubmitHandler(e) {
   e.preventDefault();
 
   const placeInputsObj = {
@@ -122,8 +120,8 @@ function addPlaceFormSubmitHandler(e) {
 
   renderCard(placeInputsObj);
   e.target.reset();
-  closePopup();
+  closePopup(e.target.closest('.popup'));
 }
 
-profileEditForm.addEventListener('submit', profileFormSubmitHandler);
-addPlaceForm.addEventListener('submit', addPlaceFormSubmitHandler);
+formProfileEdit.addEventListener('submit', formProfileSubmitHandler);
+formAddPlace.addEventListener('submit', formAddPlaceSubmitHandler);
