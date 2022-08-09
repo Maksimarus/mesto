@@ -1,3 +1,5 @@
+import './index.css';
+
 import initialCards from '../scripts/cards.js';
 import {
   profileEditButton,
