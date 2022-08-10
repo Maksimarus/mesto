@@ -27,9 +27,9 @@ addPlaceFormValidator.enableValidation();
 
 // Функция открытия попапа с картинкой
 const popupWithImage = new PopupWithImage('.popup_role_open-image');
+popupWithImage.setEventListeners();
 const openImage = (imageTitle, imageLink) => {
   popupWithImage.open(imageTitle, imageLink);
-  popupWithImage.setEventListeners();
 };
 
 // Функция создания карточки
