@@ -9,10 +9,10 @@ _Есть возможность добавлять, удалять фотогр
 
 ## Стэк технологий
 
-- HTML 5
-- CSS 3
+- HTML
+- CSS
 - JavaScript
 - Webpack
 
 Посмотреть проект можно здесь
-https://maksimarus.github.io/mesto/index.html
+https://maksimarus.github.io/mesto/

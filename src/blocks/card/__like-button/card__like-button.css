@@ -4,6 +4,7 @@
   background: url(../../../images/icons/like-icon.svg) center no-repeat;
   background-size: cover;
   flex-shrink: 0;
+  margin-bottom: 3px;
 }
 
 .card__like-button:hover {

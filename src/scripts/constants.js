@@ -6,6 +6,7 @@ export const nameInput = formProfileEdit.elements['name-input'];
 export const jobInput = formProfileEdit.elements['job-input'];
 
 export const formAddPlace = document.forms['form-addPlace'];
+export const formUpdateAvatar = document.forms['form-updateAvatar'];
 
 export const formConfig = {
   formSelector: '.popup__form',
