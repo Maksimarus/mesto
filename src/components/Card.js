@@ -30,13 +30,24 @@ export default class Card {
     return card;
   }
 
+  _checkMyLike() {
+    return this._likesCountArray.some(user => user._id === this._currentUserId);
+  }
+  _setLikeState() {
+    this._likesCountElement.textContent = this._likesCountArray.length;
+    this._checkMyLike()
+      ? this._buttonLike.classList.add('active')
+      : this._buttonLike.classList.remove('active');
+  }
+  setLikes(payload) {
+    this._likesCountArray = payload;
+    this._setLikeState();
+  }
   _toggleLike() {
     if (this._buttonLike.classList.contains('active')) {
       this._dislikeBtnHandler();
-      this._buttonLike.classList.remove('active');
     } else {
       this._likeBtnHandler();
-      this._buttonLike.classList.add('active');
     }
   }
 
@@ -44,7 +55,6 @@ export default class Card {
     this._card.remove();
     this._card = null;
   };
-
   _setEventListeners() {
     this._buttonLike = this._card.querySelector('.card__like-button');
     this._buttonDelete = this._card.querySelector('.card__delete-button');
@@ -55,22 +65,19 @@ export default class Card {
       this._handleCardClick(this._cardName, this._cardImageLink),
     );
   }
-
+  _checkMyCards() {
+    this._likesCountElement = this._card.querySelector('.card__like-count');
+    this._setLikeState();
+    if (this._ownerId !== this._currentUserId) {
+      this._buttonDelete.classList.add('none');
+    }
+  }
   createCard() {
     this._card = this._getTemplate();
     this._setEventListeners();
-
-    if (this._likesCountArray.find(user => user._id === this._currentUserId)) {
-      this._buttonLike.classList.add('active');
-    }
-
-    if (this._ownerId !== this._currentUserId) {
-      this._buttonDelete.style.display = 'none';
-    }
+    this._checkMyCards();
 
     this._cardTitle = this._card.querySelector('.card__title');
-    this._likesCountElement = this._card.querySelector('.card__like-count');
-    this._likesCountElement.textContent = this._likesCountArray.length;
     this._cardTitle.textContent = this._cardName;
     this._cardImage.alt = this._cardName;
     this._cardImage.src = this._cardImageLink;

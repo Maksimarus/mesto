@@ -57,8 +57,8 @@ const userInfo = new UserInfo('.profile__name', '.profile__description', () => {
 userInfo.setEventListener();
 const popupEditProfile = new PopupWithForm('.popup_role_edit-profile', inputValues => {
   const newUserData = {
-    name: inputValues['name-input'],
-    about: inputValues['job-input'],
+    name: inputValues.nameInput,
+    about: inputValues.jobInput,
   };
   popupEditProfile.setLoadingState(true);
   api
@@ -75,7 +75,7 @@ popupEditProfile.setEventListeners();
 const popupUpdateAvatar = new PopupWithForm('.popup_role_edit-avatar', inputValues => {
   popupUpdateAvatar.setLoadingState(true);
   api
-    .updateUserAvatar(inputValues['avatar-input'])
+    .updateUserAvatar(inputValues.avatarInput)
     .then(res => {
       userInfo.setUserAvatar(res.avatar);
     })
@@ -91,17 +91,16 @@ const generateCard = obj => {
     '#card-template',
     openImage,
     () => {
-      popupDeleteCard.setSubmitFunc(() => {
+      popupDeleteCard.open(() => {
         api.deleteCard(card.cardId).catch(err => console.log(err));
         card.deleteCard();
       });
-      popupDeleteCard.open();
     },
     () => {
       api
         .likeCard(card.cardId)
         .then(res => {
-          card._likesCountElement.textContent = res.likes.length;
+          card.setLikes(res.likes);
         })
         .catch(err => console.log(err));
     },
@@ -109,7 +108,7 @@ const generateCard = obj => {
       api
         .dislikeCard(card.cardId)
         .then(res => {
-          card._likesCountElement.textContent = res.likes.length;
+          card.setLikes(res.likes);
         })
         .catch(err => console.log(err));
     },
@@ -125,8 +124,8 @@ const cardList = new Section(item => {
 //  Попап добавления новой карточки
 const popupAddCard = new PopupWithForm('.popup_role_add-card', inputValues => {
   const placeInputsObj = {
-    name: inputValues['placeTitle-input'],
-    link: inputValues['placeUrl-input'],
+    name: inputValues.placeTitleInput,
+    link: inputValues.placeUrlInput,
   };
   popupAddCard.setLoadingState(true);
   api
@@ -142,8 +141,8 @@ popupAddCard.setEventListeners();
 // Открытие попапа профиля
 profileEditButton.addEventListener('click', () => {
   const profileData = userInfo.getUserInfo();
-  nameInput.value = profileData['name-input'];
-  jobInput.value = profileData['job-input'];
+  nameInput.value = profileData.nameInput;
+  jobInput.value = profileData.jobInput;
   profileFormValidator.hideErrors();
   popupEditProfile.open();
 });

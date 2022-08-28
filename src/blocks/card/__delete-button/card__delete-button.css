@@ -7,3 +7,7 @@
   background: url(../../../images/icons/delete-icon.svg) center no-repeat;
   background-size: cover;
 }
+
+.card__delete-button.none {
+  display: none;
+}

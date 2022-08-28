@@ -3,23 +3,26 @@ export default class Api {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
   }
+  _responseHandler(res) {
+    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+  }
   likeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: this._headers,
-    }).then(res => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
+    }).then(this._responseHandler);
   }
   dislikeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: this._headers,
-    }).then(res => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
+    }).then(this._responseHandler);
   }
   deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers,
-    }).then(res => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
+    }).then(this._responseHandler);
   }
   postNewCard({name, link}) {
     return fetch(`${this._baseUrl}/cards`, {
@@ -29,7 +32,7 @@ export default class Api {
         name,
         link,
       }),
-    }).then(res => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
+    }).then(this._responseHandler);
   }
   updateUserAvatar(avatar) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
@@ -38,7 +41,7 @@ export default class Api {
       body: JSON.stringify({
         avatar,
       }),
-    }).then(res => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
+    }).then(this._responseHandler);
   }
   updateUserInfo({name, about}) {
     return fetch(`${this._baseUrl}/users/me`, {
@@ -48,19 +51,19 @@ export default class Api {
         name,
         about,
       }),
-    }).then(res => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
+    }).then(this._responseHandler);
   }
   _getUser() {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
       headers: this._headers,
-    }).then(res => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
+    }).then(this._responseHandler);
   }
   _getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'GET',
       headers: this._headers,
-    }).then(res => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
+    }).then(this._responseHandler);
   }
   getInitialData() {
     return Promise.all([this._getUser(), this._getInitialCards()]);

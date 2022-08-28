@@ -8,8 +8,8 @@ export default class UserInfo {
   }
   getUserInfo() {
     return {
-      ['name-input']: this._userName.textContent,
-      ['job-input']: this._userInfo.textContent,
+      nameInput: this._userName.textContent,
+      jobInput: this._userInfo.textContent,
     };
   }
   setUserInfo(newUserData) {
